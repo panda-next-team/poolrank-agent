@@ -40,6 +40,26 @@ func (s *FixerService) GetRate(ctx context.Context, in *pb.GetRateRequest) (*pb.
 	return &pb.GetRateResponse{Rate: loadRate(rate)}, nil
 }
 
+func (s *FixerService) GetRates(ctx context.Context, in *pb.GetRatesRequest) (*pb.GetRatesResponse, error) {
+	if in.Base == "" {
+		st := status.New(codes.InvalidArgument, "Invalid argument base")
+		return nil, st.Err()
+	}
+
+	rates := make([]*model.Rate, 0)
+	err := s.Engine.Where("base = ?", in.Base).Find(&rates)
+	if err != nil {
+		st := status.New(codes.Internal, "Server internal error")
+		return nil, st.Err()
+	}
+
+	pbRates := make([]*pb.Rate, len(rates))
+	for i, rate := range rates {
+		pbRates[i] = loadRate(rate)
+	}
+	return &pb.GetRatesResponse{Rates: pbRates}, nil
+}
+
 func loadRate(model *model.Rate) *pb.Rate {
 	entity := new(pb.Rate)
 	entity.Id = model.Id
