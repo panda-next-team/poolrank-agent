@@ -85,7 +85,7 @@ func main() {
 			Name:  "run",
 			Usage: "run grpc server",
 			Action: func(c *cli.Context) {
-				log.Println("basedata grpc server start, listen: ", config.Port)
+				log.Println("agent grpc server start, listen: ", config.Port)
 
 				engine, engineErr := pkg.NewMysqlEngine(pkg.DriverName, pkg.GenerateMysqlSource(
 					config.Mysql.User, config.Mysql.Password, config.Mysql.Host,

@@ -39,6 +39,7 @@ func loadQuote(quote *model.Quote) *pb.Quote {
 	entity := new(pb.Quote)
 	entity.Id = quote.Id
 	entity.EnTag = quote.EnTag
+	entity.EurPrice = quote.EurPrice
 	entity.CirculatingSupply = quote.CirculatingSupply
 	entity.MarketCap = quote.MarketCap
 	entity.NumMarketPairs = quote.NumMarketPairs
